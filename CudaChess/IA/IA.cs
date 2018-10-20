@@ -1,12 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using System.Runtime.InteropServices;
+
 using Chess.Pieces;
 using Chess.Utils;
 
 namespace Chess.AI
 {
-   class SimpleDepthFirstSearchAI : Agent
+   //enum da eliminare, ma l'idea della gerarchia va tenuta...
+   //solo che servono molti più livelli intermedi. es: minaccia 1, 2, 3 va bene ma
+   //il valore della mossa dipende anche da che pezzi minaccia non solo da quanti ne 
+   //minaccia. vale lo stesso anche per difende e mangia
+   enum MovValue
+   {
+      minacciato = -20,
+      minaccia = 2,
+      mangia,
+      difende,
+      scacco = 10
+   }
+
+   class SimpleDepthFirstSearchAI : Player
    {
       private Stack<(Move move, Piece piece)> moveStack = new Stack<(Move, Piece)>();
       public const int RecursionLevel = 2;
@@ -153,16 +168,28 @@ namespace Chess.AI
       }
    }
 
-   //enum da eliminare, ma l'idea della gerarchia va tenuta...
-   //solo che servono molti più livelli intermedi. es: minaccia 1, 2, 3 va bene ma
-   //il valore della mossa dipende anche da che pezzi minaccia non solo da quanti ne 
-   //minaccia. vale lo stesso anche per difende e mangia
-   enum MovValue {
-       minacciato  = -20,
-       minaccia    = 2,
-       mangia,
-       difende,
-       scacco      = 10
-   }
 
+   class CudaBreadthFirstSearchAI : Player
+   {
+      struct MarshalledMove {
+         [MarshalAs(UnmanagedType.U8)]
+         public ulong from;
+         [MarshalAs(UnmanagedType.U8)]
+         public ulong to;
+         [MarshalAs(UnmanagedType.I4)]
+         public int value;
+      }
+
+      public CudaBreadthFirstSearchAI(Team team) : base(team) { }
+
+      public override Move NextMove(Chessboard board)
+      {
+         var move = NextMove();
+         return new Move { piece = null, from = move.from.ToPointList()[0], to = move.to.ToPointList()[0], val = move.value };
+      }
+
+      [DllImport(@"C:\Users\Alberto\Projects\Code\Source\cuda_chess\x64\Debug\CudaAI.dll",
+                 EntryPoint = "next_move")]
+      private static extern MarshalledMove NextMove();
+   }
 }

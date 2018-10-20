@@ -12,10 +12,11 @@ namespace Chess
       {
          var gRenderer  = GameRenderer.Instance;
          var board      = new Chessboard();
-         var realPlayer = new Player(Team.white, gRenderer);
-         var pcPlayer   = new AI.SimpleDepthFirstSearchAI(Team.black);
-         AI.Agent player = realPlayer;
+         var realPlayer = new User(Team.white, gRenderer);
+         var pcPlayer   = new AI.CudaBreadthFirstSearchAI(Team.black);
+         AI.Player player = realPlayer;
 
+         var newmove = pcPlayer.NextMove(board);
          //VisualChessboardAnalyzer.start();
          //Console.ReadKey();
 
@@ -53,4 +54,5 @@ namespace Chess
          return false;
       }
    }
+   
 }

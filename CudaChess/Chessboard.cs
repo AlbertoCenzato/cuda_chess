@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 using Chess.Pieces;
 using Chess.Utils;
@@ -19,7 +20,7 @@ namespace Chess
       white = 1,
       black
    }
-
+   
    public struct Move
    {
       public Piece piece;
@@ -33,13 +34,13 @@ namespace Chess
       private Piece[,] grid;                          //scacchiera
       private List<Cell> white;  //lista dei pezzi in gioco (squadra 1)
       private List<Cell> black;  //  "    "    "    "  "    (squadra 2)
-
-      //TODO security issues with these fields (maybe a private setter is better?)
+      
       public ulong WMCells { get; private set; }  //celle micacciate dai bianchi
       public ulong BMCells { get; private set; }  //celle minacciate dai neri
 
       public const int dim = 8;  //dimensione della scacchiera
 
+      /*
       private struct MoveExtended
       {
          public Piece piece;
@@ -48,6 +49,7 @@ namespace Chess
          public Cell to;
          public Team team;    //TODO useless, piece contains the information about the team
       }
+      */
 
 
       //----------------------------------------------------------------------------------

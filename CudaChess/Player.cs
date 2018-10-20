@@ -4,11 +4,11 @@ using Chess.Utils;
 
 namespace Chess
 {
-   class Player : AI.Agent
+   class User : AI.Player
    {
       Renderer.GameRenderer renderer;
 
-      public Player(Team team, Renderer.GameRenderer gRenderer) : base(team)
+      public User(Team team, Renderer.GameRenderer gRenderer) : base(team)
       {
          renderer = gRenderer;
       }

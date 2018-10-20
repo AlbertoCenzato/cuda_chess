@@ -1,10 +1,10 @@
 ﻿namespace Chess.AI
 {
-   abstract class Agent
+   abstract class Player
    {
       public readonly Team team;
 
-      public Agent(Team team)
+      public Player(Team team)
       {
          this.team = team;
       }

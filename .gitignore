@@ -1,3 +1,6 @@
 /.vs
 /CudaChess/bin
 /CudaChess/obj
+/CudaAI/x64
+/Debug
+/x64
